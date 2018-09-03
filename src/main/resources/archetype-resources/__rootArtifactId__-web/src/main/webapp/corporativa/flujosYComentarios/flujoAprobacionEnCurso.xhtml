@@ -1,0 +1,94 @@
+#set( $symbol_pound = '#' )
+#set( $symbol_dollar = '$' )
+#set( $symbol_escape = '\' )
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"      
+      xmlns:p="http://primefaces.org/ui">
+
+    <f:view contentType="text/html" locale="es">
+        <h:head>
+            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+            <meta http-equiv="pragma" content="no-cache"/>
+            <meta http-equiv="cache-control" content="no-cache"/>
+            <meta http-equiv="expires" content="0"/>
+            <link type="text/css" rel="stylesheet" href="${symbol_pound}{facesContext.externalContext.requestContextPath}/corporativa/recursos/css/zaimella.css" />
+            <title>Flujo de aprobación en curso</title>
+            <style>
+                .ui-datatable thead th, .ui-datatable tbody tr td{
+                    padding-top: 1px !Important;
+                    padding-bottom: 1px !Important;
+                    padding-left: 2px !IMPORTANT;
+                }
+                .ui-column-title{
+                    font-weight: 900 !IMPORTANT; 
+                    text-align: center;
+                }
+                .ui-dialog .ui-dialog-content.ui-df-content {
+                    padding: 3px 3px 3px 3px !IMPORTANT;
+                }
+                .ui-g-1, .ui-g-2, .ui-g-3, .ui-g-4, .ui-g-5, .ui-g-6, .ui-g-7, .ui-g-8, .ui-g-9, .ui-g-10, .ui-g-11, .ui-g-12 {
+                    padding: 0px;
+                }                
+            </style>  
+
+        </h:head>
+        <h:body>      
+
+            <h:form id="frmMostrarVariable" enctype="multipart/form-data">
+                <p:growl id="growlFlujo" showDetail="true" sticky="true" />  
+                <f:metadata>
+                    <f:viewAction action="${symbol_pound}{mostrarFlujoAprobacionControlador.preparaInterface()}" />
+                </f:metadata> 
+                
+                <p:outputPanel id="panelRuta"
+                               style="text-align: center;"
+                               >
+                    <p:outputLabel style="font-weight: 900 !IMPORTANT;" 
+                                   value="${symbol_pound}{mostrarFlujoAprobacionControlador.descripcion}"
+                                   title="flujo id=${symbol_pound}{mostrarFlujoAprobacionControlador.flujoAprobacionEnCursoMostrar.id}"
+                                   />
+                    <table style="padding: 0px 0px !important; text-align: left; font-size: small; border-collapse: collapse; margin-left: auto; margin-right: auto;">
+                        <tr>
+                            <td style="padding: 3px 6px 3px 6px !important; border: 1px solid ${symbol_pound}bbbbbb !important;">
+                                <h:outputText style="text-align: center; font-weight: 500;" value="${symbol_pound}{mostrarFlujoAprobacionControlador.flujoAprobacionEnCursoMostrar.usuarioIniciador.nombreUsuario}"></h:outputText>
+                            </td>
+                            <td style="padding: 3px 6px 3px 6px  !important; border: 1px solid ${symbol_pound}bbbbbb !important;">
+                                <h:outputText value="${symbol_pound}{mostrarFlujoAprobacionControlador.flujoAprobacionEnCursoMostrar.fechaInicio}">
+                                    <f:convertDateTime pattern="dd/MM/yyyy HH:mm" />
+                                </h:outputText>
+                            </td>
+                            <td style="padding: 3px 6px 3px 6px !important; border: 1px solid ${symbol_pound}bbbbbb !important;">
+                                INICIO
+                            </td>
+                        </tr>
+                        <ui:repeat value="${symbol_pound}{mostrarFlujoAprobacionControlador.flujoAprobacionEnCursoMostrar.detalles}" 
+                                   var="detalle"
+                                   >
+                            <tr>
+                                <td style="padding: 3px 6px 3px 6px !important; border: 1px solid ${symbol_pound}bbbbbb !important;">
+                                    <h:outputText value="${symbol_pound}{detalle.userId}" title="id=${symbol_pound}{detalle.id} monto=${symbol_pound}{detalle.monto}" />
+                                </td>
+                                <td style="padding: 3px 6px 3px 6px !important; border: 1px solid ${symbol_pound}bbbbbb !important;">
+                                    <h:outputText value="${symbol_pound}{detalle.fechaHasta}">
+                                        <f:convertDateTime pattern="dd/MM/yyyy HH:mm" />
+                                    </h:outputText>
+                                </td> 
+                                <td style="padding: 3px 6px 3px 6px !important; border: 1px solid ${symbol_pound}bbbbbb !important;">
+                                    <h:outputText value="APROBADO" rendered="${symbol_pound}{not empty detalle.fechaHasta}"/>
+                                    <h:outputText value="PENDIENTE" rendered="${symbol_pound}{empty detalle.fechaHasta}"/>
+                                </td>
+                            </tr>
+                        </ui:repeat>
+                    </table>
+                </p:outputPanel>
+
+
+            </h:form>
+
+        </h:body>
+    </f:view>
+</html>

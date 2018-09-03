@@ -1,0 +1,85 @@
+#set( $symbol_pound = '#' )
+#set( $symbol_dollar = '$' )
+#set( $symbol_escape = '\' )
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.1" xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
+  <persistence-unit name="ModulosPU" transaction-type="JTA">
+    <provider>org.hibernate.ejb.HibernatePersistence</provider>
+    <jta-data-source>java:jboss/datasources/ModulosDS</jta-data-source>
+    <class>com.zaimella.modelbase.modelo.Evento</class>
+    <class>com.zaimella.modelbase.modelo.Notificacion</class>
+    <class>com.zaimella.modelbase.modelo.Comentario</class>
+    <class>com.zaimella.modelbase.modelo.Metodologia</class>
+    <class>com.zaimella.modelbase.modelo.NotificacionPeriodica</class>
+    <class>com.zaimella.modulo.documental.modelo.Carpeta</class>
+    <class>com.zaimella.modulo.documental.modelo.Archivo</class>
+    <class>com.zaimella.modulo.documental.modelo.Version</class>
+    <class>com.zaimella.corporative.apex.modelo.Empresa</class>
+    <class>com.zaimella.corporative.apex.modelo.Modulo</class>
+    <class>com.zaimella.corporative.apex.modelo.Pagina</class>
+    <class>com.zaimella.corporative.apex.modelo.RolAcceso</class>
+    <class>com.zaimella.corporative.apex.modelo.RolPagina</class>
+    <class>com.zaimella.corporative.apex.modelo.UsuarioCorporativo</class>
+    <class>com.zaimella.corporative.apex.modelo.UsuarioRol</class>
+    <class>com.zaimella.corporative.modelo.Parametro</class>
+    <class>com.zaimella.corporative.modelo.AreaADN</class>
+    <class>com.zaimella.corporative.modelo.CargoADN</class>
+    <class>com.zaimella.corporative.modelo.CargoEvolution</class>
+    <class>com.zaimella.corporative.modelo.DepartamentoEvolution</class>
+    <class>com.zaimella.corporative.modelo.EntidadGeneral</class>
+    <class>com.zaimella.corporative.modelo.DefectoDetalle</class>
+    <class>com.zaimella.corporative.modelo.DefectoAgrupacion</class>
+    <class>com.zaimella.corporative.modelo.FrecuenciaAuditoria</class>
+    <class>com.zaimella.corporative.modelo.FrecuenciaMonitoreo</class>
+    <class>com.zaimella.corporative.modelo.Herramienta</class>
+    <class>com.zaimella.corporative.modelo.Implemento</class>
+    <class>com.zaimella.corporative.modelo.InstrumentoDeMedicion</class>
+    <class>com.zaimella.corporative.modelo.MaquinaCorporativa</class>
+    <class>com.zaimella.corporative.modelo.MaterialProducto</class>
+    <class>com.zaimella.corporative.modelo.ProductoCorporativo</class>
+    <class>com.zaimella.corporative.modelo.ProductoCorporativoMaquina</class>
+    <class>com.zaimella.corporative.modelo.ProveeInformacionInterface</class>
+    <class>com.zaimella.corporative.modelo.RegistroUDC</class>
+    <class>com.zaimella.corporative.modelo.TablaGeneralDetalle</class>
+    <class>com.zaimella.corporative.modelo.TipoQCP</class>
+    <class>com.zaimella.corporative.modelo.UnidadDeMedida</class>
+    <class>com.zaimella.corporative.jde.modelo.OrdenProduccion</class>
+    <class>com.zaimella.corporative.jde.modelo.MaquinaCorporativa</class>
+    <class>com.zaimella.corporative.tablasgenerales.modelo.EntidadTablaGeneral</class>
+    <class>com.zaimella.corporative.tablasgenerales.modelo.TablaGeneralDetalle</class>
+    
+    <class>com.zaimella.qcps.modelo.ProcedimientoQCP</class>
+    <class>com.zaimella.qcps.modelo.VersionQCP</class>
+    <class>com.zaimella.qcps.modelo.vo.ProcedimientoQCPVO</class>
+    <class>com.zaimella.qcps.modelo.Como</class>
+    <class>com.zaimella.qcps.modelo.ComoImagen</class>
+    <class>com.zaimella.qcps.modelo.ProcedimientoQCPAnexo</class>
+    <class>com.zaimella.qcps.modelo.ProcedimientoQCPHerramienta</class>
+    <class>com.zaimella.qcps.modelo.ProcedimientoQCPImplemento</class>
+    <class>com.zaimella.qcps.modelo.ProcedimientoQCPRelacionado</class>
+    <class>com.zaimella.qcps.modelo.Que</class>
+    <class>com.zaimella.qcps.modelo.Quien</class>
+    <class>com.zaimella.qcps.modelo.Evaluacion</class>
+    <class>com.zaimella.qcps.modelo.EvaluacionComo</class>
+    <class>com.zaimella.qcps.modelo.EvaluacionEjecutor</class>
+    <class>com.zaimella.qcps.modelo.vo.EvaluacionVO</class>
+    <class>com.zaimella.qcps.modelo.vo.ProcedimientoQCPVO</class>
+    
+    <class>com.zaimella.modelbase.flujosaprobacion.modelo.FlujoCabecera</class>
+    <class>com.zaimella.modelbase.flujosaprobacion.modelo.FlujoDetalle</class>
+    <class>com.zaimella.modelbase.flujosaprobacion.modelo.Comentario</class>
+    <class>com.zaimella.modelbase.flujosaprobacion.modelo.Notificacion</class>
+    <class>com.zaimella.modelbase.flujosaprobacion.modelo.NotificacionVO</class>
+    <class>com.zaimella.modelbase.modelo.RecursoProceso</class>
+  
+    <exclude-unlisted-classes>false</exclude-unlisted-classes>
+    <properties>
+      <property name="hibernate.dialect" value="org.hibernate.dialect.Oracle10gDialect"/>
+      <property name="hibernate.show_sql" value="true"/>
+      <property name="hibernate.format_sql" value="false"/>
+      <property name="hibernate.transaction.manager_lookup_class" value="org.hibernate.transaction.JBossTransactionManagerLookup"/>
+      <!-- none & drop-and-create -->
+      <property name="javax.persistence.schema-generation.database.action" value="none"/>
+    </properties>
+  </persistence-unit>
+</persistence>

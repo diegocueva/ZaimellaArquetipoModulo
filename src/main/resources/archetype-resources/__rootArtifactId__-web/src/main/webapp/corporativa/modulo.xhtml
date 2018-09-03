@@ -1,0 +1,58 @@
+#set( $symbol_pound = '#' )
+#set( $symbol_dollar = '$' )
+#set( $symbol_escape = '\' )
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <f:view contentType="text/html">
+        <h:head>
+            <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+            <meta http-equiv="Content-Type" content="text/html; " />
+            <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
+            <meta name="apple-mobile-web-app-capable" content="yes" />
+            <meta http-equiv="pragma" content="no-cache"/>
+            <meta http-equiv="cache-control" content="no-cache"/>
+            <meta http-equiv="expires" content="0"/>
+            <title>${symbol_pound}{moduloControlador.modulo.nombre}</title>
+            <script>
+                if (!window.sessionStorage.getItem('tabId')) {
+                    tabId = (new Date()).getTime();
+                    window.sessionStorage.setItem('tabId', tabId);
+                    //generate the cookie
+                    strCookie = 'tabId=' + tabId + ';';
+                    strCookie += ' path=/';
+
+                    if (window.location.protocol.toLowerCase() === 'https:') {
+                        strCookie += ' secure;';
+                    }
+                    console.log("Se ha puesto nueva cookie: " + strCookie);
+                    document.cookie = strCookie;
+                }
+
+                console.log("tabId=" + window.sessionStorage.getItem('tabId'));
+            </script>
+        </h:head>
+        <h:body onload="rc()" >
+            <h:form id="frmIngresar">
+
+                <p:remoteCommand name="rc" action="${symbol_pound}{moduloControlador.ingresoDefault()}"/>
+
+            </h:form>   
+            <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />
+            <p:dialog widgetVar="statusDialog" 
+                      modal="true" 
+                      draggable="false" 
+                      closable="false" 
+                      resizable="false" 
+                      showHeader="false">
+                <img src="${symbol_pound}{facesContext.externalContext.requestContextPath}/corporativa/recursos/img/ajaxloadingbar.gif" 
+                     onclick="PF('statusDialog').hide()"
+                     />
+            </p:dialog>
+        </h:body>
+    </f:view>
+</html> 

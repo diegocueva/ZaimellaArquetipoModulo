@@ -1,0 +1,1 @@
+Ponga en este directorio todos los scripts SQL para generación de vistas y paquetes.

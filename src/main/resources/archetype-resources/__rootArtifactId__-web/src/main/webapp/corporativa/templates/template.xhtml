@@ -1,0 +1,192 @@
+#set( $symbol_pound = '#' )
+#set( $symbol_dollar = '$' )
+#set( $symbol_escape = '\' )
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      >
+
+    <f:view contentType="text/html">
+        <h:head>
+
+            <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+            <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=2.0, user-scalable=yes"/>
+            <meta name="apple-mobile-web-app-capable" content="yes" />
+            <meta http-equiv="pragma" content="no-cache"/>
+            <meta http-equiv="cache-control" content="no-cache"/>
+            <meta http-equiv="expires" content="0"/>
+
+            <script type="text/javascript" src="${symbol_pound}{facesContext.externalContext.requestContextPath}/corporativa/recursos/js/zaimella.js"></script>
+            <link rel="shortcut icon" type="image/x-icon" href="${symbol_pound}{facesContext.externalContext.requestContextPath}/resources/img/favicon.png" />
+            <link type="text/css" rel="stylesheet" href="${symbol_pound}{facesContext.externalContext.requestContextPath}/corporativa/recursos/css/zaimellaCorporativo.css" />
+            <link type="text/css" rel="stylesheet" href="${symbol_pound}{facesContext.externalContext.requestContextPath}/corporativa/recursos/css/zaimella.css" />
+
+            <title>${symbol_pound}{moduloControlador.modulo.nombre} V${symbol_pound}{moduloControlador.modulo.version}</title>
+            <script>
+                if (!window.sessionStorage.getItem('tabId')) {
+                    alert('Pestaña o ventana abierta indebidamente. Por favor ciérrela');
+                    tabId = (new Date()).getTime();
+                    window.sessionStorage.setItem('tabId', tabId);
+                    console.log("Nueva ventana: " + tabId);
+                }
+                console.log("tabId=" + window.sessionStorage.getItem('tabId'));
+            </script>
+        </h:head>
+        <h:body style="margin: 0px !IMPORTANT;" >
+            <h:form id="frmCheckWindow">
+                <p:remoteCommand name="checkWindow" action="${symbol_pound}{loginControlador.checkWindow()}" />
+            </h:form>		
+
+            <h:form id="frmIdle">
+                <p:idleMonitor timeout="${symbol_pound}{moduloControlador.tiempoInactividad*1000}">
+                    <p:ajax event="idle"
+                            listener="${symbol_pound}{applicationControlador.inactividad()}"
+                            />
+                </p:idleMonitor>                    
+            </h:form>
+
+            <h:form id="frmMenuCorp">
+                <div id="MENUSIDE" class="ps-container" style="height: 300px;">
+                    <div id="MENUSIDEindent">
+                        <span id="LOGO" class="bordersOfMenuSide">
+                            <h:commandLink action="${symbol_pound}{applicationControlador.saltarAPortalCorporativo()}">
+                                <img src="${symbol_pound}{facesContext.externalContext.requestContextPath}/corporativa/recursos/img/zaimella_logo.jpg" />
+                            </h:commandLink>
+                        </span>
+
+                        <ui:repeat value="${symbol_pound}{moduloControlador.usuario.modulos}" var="modulo">
+                            <span id="SubMenu_${symbol_pound}{modulo.codModulo}" class="MenuSideMainLink bordersOfMenuSide MenuSideMainLinkDark">
+                                <span class="MainLinkText">
+                                    <i class="fa fa-circle-on MainLinkTextCmd" style="padding-right: 5px;" />
+                                    <p:commandLink id="idModuloMenu"
+                                                   title="${symbol_pound}{modulo.codModulo} ${symbol_pound}{modulo.url}"
+                                                   value="${symbol_pound}{modulo.nombre}"
+                                                   class="MainLinkTextCmd"
+                                                   ajax="false"
+                                                   action="${symbol_pound}{corporativeControlador.saltarAlModulo(modulo)}"
+                                                   >
+                                    </p:commandLink>
+                                </span>
+                            </span>
+                        </ui:repeat>
+
+                        <hr></hr>
+
+                        <span id="SubMenu-App11" class="MenuSideMainLink bordersOfMenuSide MenuSideMainLinkDark">
+                            <span class="MainLinkText">
+                                <i class="fa fa-power-off MainLinkTextCmd" style="padding-right: 5px;"  />
+                                <p:commandLink id="menuCorporativoSalir"
+                                               title="Salir"
+                                               value="Salir"
+                                               class="MainLinkTextCmd"
+                                               ajax="false"
+                                               action="${symbol_pound}{applicationControlador.salir()}"
+                                               >
+                                </p:commandLink>
+                            </span>
+                        </span>						
+                    </div>
+                </div>
+            </h:form>
+
+            <div id="CONTENTSIDE">
+
+                <div id="CONTENTSIDEindent">
+
+                    <!-- header bar start-->
+
+                    <!-- header bar end-->
+
+                    <div class="content-container">
+                        <div class="ContentSideSections">								
+                            <div class="Content100 overHidden TextShadow">
+                                <h:form id="frmMenu" enctype="multipart/form-data;charset=UTF-8" acceptcharset="UTF-8" style="display: inline;">
+                                    <ui:include src="/corporativa/templates/templateBarraIntegrada.xhtml" />
+                                </h:form>
+                            </div>
+                        </div>
+
+                        <div class="ContentSideSections Implementation">
+
+                            <h:form id="frmContent" enctype="multipart/form-data;charset=UTF-8" acceptcharset="UTF-8" >
+                                <p:inputText type="hidden" widgetVar="screenWidth" value="${symbol_pound}{pantallaControlador.screenWidth}" />
+                                <p:inputText type="hidden" widgetVar="screenHeight" value="${symbol_pound}{pantallaControlador.screenHeight}" />
+                                <!-- GROWL growl -->
+                                <p:growl id="idMensajes" showDetail="true" life="4000" />
+
+                                <!-- p:defaultCommand -->
+                                <p:commandButton id="dummy" process="@none" global="false" style="display:none;"/>
+                                <p:defaultCommand target="dummy" />
+
+                                <!-- Diàlogo GLOBAL -->
+                                <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                                    <p:commandButton value="SI" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                                    <p:commandButton value="NO" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                                </p:confirmDialog>
+
+                                <p:outputPanel id="panelGlobalContent" class="ui-g">
+
+                                    <p:outputPanel id="panelIzquierdo" 
+                                                   class="${symbol_pound}{moduloControlador.classPanelIzquierdo()}}" 
+                                                   style="border: none; width: fit-content;"
+                                                   rendered="${symbol_pound}{moduloControlador.mostrarPanelIzquierdo}"
+                                                   >
+                                        <p:outputPanel>
+                                            <ui:include src="/WEB-INF/templatePreContent.xhtml" />
+                                        </p:outputPanel>
+                                    </p:outputPanel>
+
+                                    <p:outputPanel id="panelContenido"
+                                                   class="${symbol_pound}{moduloControlador.classPanelContenido()}" 
+                                                   style="margin-left: auto; margin-right: auto;"                                                   
+                                                   >
+                                        <p:outputPanel class="ui-g-12 ui-g-nopad">
+
+                                            <ui:include src="/corporativa/templates/templateContent.xhtml" />
+
+                                        </p:outputPanel>
+                                    </p:outputPanel>
+
+                                </p:outputPanel>
+
+                            </h:form>
+
+                            <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />
+
+                            <p:dialog widgetVar="statusDialog" 
+                                      modal="true" 
+                                      draggable="false" 
+                                      closable="false" 
+                                      resizable="false" 
+                                      showHeader="false">
+                                <img src="${symbol_pound}{facesContext.externalContext.requestContextPath}/corporativa/recursos/img/ajaxloadingbar.gif" 
+                                     onclick="PF('statusDialog').hide()"
+                                     />
+                            </p:dialog>
+
+                        </div>
+                    </div>
+
+                    <!-- footer start-->
+                    <!-- div class="ContentSideSections">
+                    </div -->
+                    <!-- footer end-->
+
+                </div>
+            </div>
+
+            <script type="text/javascript" src="${symbol_pound}{facesContext.externalContext.requestContextPath}/corporativa/recursos/js/perfect-scrollbar.js"></script>
+            <script type="text/javascript" src="${symbol_pound}{facesContext.externalContext.requestContextPath}/corporativa/recursos/js/showcase.js"></script>
+
+        </h:body>
+    </f:view>
+    <script>
+        PF('screenWidth').jq.val(screen.width);
+        PF('screenHeight').jq.val(screen.height);
+    </script>	    
+</html>

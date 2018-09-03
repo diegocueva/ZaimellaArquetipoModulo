@@ -1,0 +1,29 @@
+#set( $symbol_pound = '#' )
+#set( $symbol_dollar = '$' )
+#set( $symbol_escape = '\' )
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:pe="http://primefaces.org/ui/extensions" 
+                template="/corporativa/templates/template.xhtml">
+    <ui:define name="content">
+        <f:metadata>
+            <f:viewAction action="${symbol_pound}{metodologiaControlador.verMetodologiaActiva()}"/>
+        </f:metadata>
+        <div class="container">
+            <h:outputLabel value="Metodología" 
+                           class="pageTitle" />
+            <div class="ui-grid-row">
+                <div  class="ui-g-12 ui-md-12 ui-lg-12">
+                    <h:panelGroup id="pGrpPdf" rendered="${symbol_pound}{metodologiaControlador.metodologia ne null}">
+                        <pe:documentViewer height="500" 
+                                           value="${symbol_pound}{metodologiaControlador.descargarArchivo(metodologiaControlador.metodologia.archivo.id)}" download="metodologia.pdf"/>  
+                    </h:panelGroup>
+                </div>
+            </div> 
+        </div> 
+
+    </ui:define>
+</ui:composition>

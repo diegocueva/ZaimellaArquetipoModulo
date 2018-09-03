@@ -1,0 +1,210 @@
+#set( $symbol_pound = '#' )
+#set( $symbol_dollar = '$' )
+#set( $symbol_escape = '\' )
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+    <f:view contentType="text/html;charset=UTF-8" encoding="UTF-8" >
+        <h:head>
+            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+            <meta http-equiv="pragma" content="no-cache"/>
+            <meta http-equiv="cache-control" content="no-cache"/>
+            <meta http-equiv="expires" content="0"/>
+            <link type="text/css" rel="stylesheet" href="${symbol_pound}{facesContext.externalContext.requestContextPath}/corporativa/recursos/css/zaimella.css" />
+            <title>${symbol_pound}{flujosYNotificacionesControlador.tituloVentana}</title>
+            <style>
+                .ui-button-text-only .ui-button-text {
+                    padding: 3px !important;
+                    font-size: smaller;
+                }
+                .ui-inputfield {
+                    padding: 0px !important;
+                }
+                .ui-selectonemenu-trigger .ui-icon-triangle-1-s, .ui-selectcheckboxmenu-trigger .ui-icon-triangle-1-s {
+                    margin-top: 0px !important;
+                }
+                .ui-selectcheckboxmenu-multiple .ui-selectcheckboxmenu-trigger .ui-icon {
+                    position: relative;
+                    top: 15%;
+                }
+                .ui-selectonemenu-panel .ui-selectonemenu-list-item, .ui-selectcheckboxmenu-panel .ui-selectcheckboxmenu-list-item {
+                    padding: 1px !important;
+                }
+                .ui-selectcheckboxmenu-panel .ui-selectcheckboxmenu-list-item {
+                    padding: 1px !important;
+                }
+                .ui-selectcheckboxmenu-panel .ui-selectcheckboxmenu-filter-container .ui-icon-search {
+                    width: 20px;
+                }
+                .ui-selectcheckboxmenu-header {
+                    margin-bottom: 0px;
+                    padding: 0px;
+                }
+                .ui-selectcheckboxmenu-panel .ui-selectcheckboxmenu-close .ui-icon-circle-close {
+                    padding-top: 7px;
+                }
+                .ui-selectcheckboxmenu-token {
+                    padding: 0px;
+                    margin: 0px;
+                }
+                .ui-fieldset-legend {
+                    padding: 4px !IMPORTANT;
+                }
+            </style>
+
+        </h:head>
+        <h:body>	
+            <h:form id="frmComentarios" enctype="multipart/form-data">
+                <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />
+                <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
+                    <img src="${symbol_pound}{facesContext.externalContext.requestContextPath}/corporativa/recursos/img/ajaxloadingbar.gif" />
+                </p:dialog>
+                <p:growl id="idEspera" showDetail="true" sticky="true" />  
+
+                <p:outputPanel id="panelTotal">
+                    <p:outputPanel id="panelComentar"
+                                   rendered="${symbol_pound}{!flujosYNotificacionesControlador.soloMirar}"
+                                   >
+                        <p:outputPanel id="panelDirigidoA"
+                                       style="display: inline !IMPORTANT; "
+                                       >
+                            <h:outputLabel for="multiple" 
+                                           value="Dirigido a:"
+                                           style="font-size: smaller; vertical-align: top; margin-right: 5px;"
+                                           />
+                            <p:selectCheckboxMenu id="multiple" 
+                                                  value="${symbol_pound}{flujosYNotificacionesControlador.seleccionados}" 
+                                                  label="Dirigido a" 
+                                                  multiple="true"
+                                                  filter="true" 
+                                                  filterMatchMode="contains" 
+                                                  panelStyle="width:250px"
+                                                  converter="omnifaces.SelectItemsConverter"
+                                                  >
+                                <f:selectItems value="${symbol_pound}{flujosYNotificacionesControlador.destinatarios}"
+                                               var="user"
+                                               itemLabel="${symbol_pound}{user.nombreApellidoMM}"
+                                               itemValue="${symbol_pound}{user}"
+                                               />
+                            </p:selectCheckboxMenu>
+                        </p:outputPanel>
+
+                        <p:outputPanel id="panelBotonesComentar"
+                                       style="display: inline !IMPORTANT; float: right;"
+                                       >
+                            <h:panelGroup id="botonAceptarAprobar" 
+                                          rendered="${symbol_pound}{flujosYNotificacionesControlador.accion == 'APROBAR'}"
+                                          >
+                                <p:commandButton value="APROBAR" 
+                                                 action="${symbol_pound}{flujosYNotificacionesControlador.onClickAceptarAprobar()}">
+                                </p:commandButton>
+                            </h:panelGroup>
+
+                            <h:panelGroup id="botonAceptarRechazar" 
+                                          rendered="${symbol_pound}{flujosYNotificacionesControlador.accion == 'RECHAZAR'}"
+                                          >
+                                <p:commandButton value="RECHAZAR" 
+                                                 action="${symbol_pound}{flujosYNotificacionesControlador.onClickAceptarRechazar()}">
+                                </p:commandButton>
+                            </h:panelGroup> 
+                            
+                            <h:panelGroup id="botonGuardarComentario" 
+                                          rendered="${symbol_pound}{flujosYNotificacionesControlador.accion == 'COMENTAR'}"
+                                          >
+                                <p:commandButton value="GUARDAR" 
+                                                 action="${symbol_pound}{flujosYNotificacionesControlador.onClickGuardar()}"
+                                                 update="panelTotal"
+                                                 >
+                                </p:commandButton>
+                            </h:panelGroup>
+                            <h:panelGroup id="botonCancelarComentario" 
+                                          rendered="${symbol_pound}{flujosYNotificacionesControlador.accion == 'COMENTAR'}"
+                                          >
+                                <p:commandButton value="CANCELAR" 
+                                                 action="${symbol_pound}{flujosYNotificacionesControlador.onClickCancelar()}"
+                                                 update="panelTotal"
+                                                 >
+                                </p:commandButton>
+                            </h:panelGroup>
+                            <h:panelGroup id="botonAceptarMOtivo" 
+                                          rendered="${symbol_pound}{flujosYNotificacionesControlador.accion == 'MOTIVO'}"
+                                          >
+                                <p:commandButton value="ACEPTAR" 
+                                                 action="${symbol_pound}{flujosYNotificacionesControlador.aceparMotivo()}"
+                                                 update="panelTotal"
+                                                 >
+                                </p:commandButton>
+                            </h:panelGroup>
+
+                        </p:outputPanel>
+
+                        <p:outputPanel id="panelComentario">
+                            <p:textEditor id="editorComentario" 
+                                          widgetVar="editorComentario" 
+                                          value="${symbol_pound}{flujosYNotificacionesControlador.comentario}" 
+                                          height="150" />
+                        </p:outputPanel>
+
+                    </p:outputPanel>
+
+                    <p:outputPanel id="panelMirar"
+                                   rendered="${symbol_pound}{flujosYNotificacionesControlador.soloMirar}"
+                                   >
+                        <p:outputPanel id="panelBotonesMirar"
+                                       style="display: table; width: 100%;"
+                                       >
+                            <h:panelGroup id="botonAgregar" >
+                                <p:commandButton value="AGREGAR" 
+                                                 action="${symbol_pound}{flujosYNotificacionesControlador.onClickAgregar()}"
+                                                 update="panelTotal"
+                                                 style="float: right;"
+                                                 >
+                                </p:commandButton>
+                            </h:panelGroup>
+                        </p:outputPanel>
+                        
+                        <p:outputPanel id="panelComentarios">
+                            <ui:repeat value="${symbol_pound}{flujosYNotificacionesControlador.comentarios}" 
+                                       var="comentario" 
+                                       rendered="${symbol_pound}{!empty flujosYNotificacionesControlador.comentarios}" >
+
+                                <p:fieldset legend="${symbol_pound}{comentario.nombreUsuario}"
+                                            style="padding: 4px !IMPORTANT"
+                                            >
+                                    <div class="ui-grid-row" style="padding: 0px;">
+                                        <div class="ui-g-7 ui-md-7 ui-lg-7" style="padding: 0px;">
+                                            Etapa: ${symbol_pound}{comentario.etapa.descripcion} / ${symbol_pound}{comentario.armaDetalle()}
+                                        </div>
+                                        <div class="ui-g-5 ui-md-5 ui-lg-5" style="padding: 0px; text-align: right;">
+                                            <h:outputText value="${symbol_pound}{comentario.fechaCreacion}" >
+                                                <f:convertDateTime pattern="dd/MM/yyyy HH:mm" />
+                                            </h:outputText>
+                                        </div>
+                                    </div>
+                                    <div class="ui-grid-row" style="padding: 0px;">
+                                        <div class="ui-g-1" style="padding: 0px;">
+                                            Texto:
+                                        </div>
+                                        <div class="ui-g-11" style="padding: 0px;">
+                                            <h:outputText value="${symbol_pound}{comentario.contenido}" escape="false" />
+                                        </div>
+                                    </div> 
+                                </p:fieldset>
+                            </ui:repeat>
+                            <p:outputLabel value="NO HAY COMENTARIOS AÚN" rendered="${symbol_pound}{empty flujosYNotificacionesControlador.comentarios}" />
+                            
+                        </p:outputPanel>
+
+                    </p:outputPanel>
+
+                </p:outputPanel>
+
+            </h:form>
+        </h:body>
+    </f:view>
+</html>

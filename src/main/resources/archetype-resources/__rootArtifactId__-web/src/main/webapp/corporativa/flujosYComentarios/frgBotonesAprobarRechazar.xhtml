@@ -1,0 +1,42 @@
+#set( $symbol_pound = '#' )
+#set( $symbol_dollar = '$' )
+#set( $symbol_escape = '\' )
+<ui:composition 
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui">
+
+    <script>
+        function saltoLuegoDeAprobar() {
+            document.getElementById('frmContent:cmdSaltarLuegoDeAprobar').click();
+        }
+
+        function saltoLuegoDeRechazar() {
+            document.getElementById('frmContent:cmdSaltarLuegoDeRechazar').click();
+        }
+    </script>
+    <p:outputPanel id="panelAprobarRechazar"
+                   style="width: 100%;text-align: center;padding-top: 10px;" 
+                   >
+        <p:commandButton  action="${symbol_pound}{flujosYNotificacionesControlador.onClickAbrirAprobar()}"
+                          value="Aprobar"
+                          ajax="true"
+                          icon="ui-icon-check"
+                          style="margin-right: 20px; icon: "
+                          >
+            <p:ajax event="dialogReturn" oncomplete="saltoLuegoDeAprobar();" />
+        </p:commandButton>   
+
+        <p:commandLink  action="${symbol_pound}{flujosYNotificacionesControlador.onClickAbrirRechazar()}"
+                        ajax="true"
+                        style="margin-left: 20px; font-size: small;"
+                        >
+            <i class="fa fa-ban" 
+               style="display: inline-block; margin-right: 5px;"
+               />
+            <h:outputText value="Rechazar"/>
+            <p:ajax event="dialogReturn" oncomplete="saltoLuegoDeRechazar();" />
+        </p:commandLink>
+    </p:outputPanel>
+</ui:composition>

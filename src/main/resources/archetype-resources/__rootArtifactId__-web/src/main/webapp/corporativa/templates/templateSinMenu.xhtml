@@ -1,0 +1,62 @@
+#set( $symbol_pound = '#' )
+#set( $symbol_dollar = '$' )
+#set( $symbol_escape = '\' )
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+    
+    <h:head>        
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=2.0, user-scalable=yes"/>
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta http-equiv="pragma" content="no-cache"/>
+        <meta http-equiv="cache-control" content="no-cache"/>
+        <meta http-equiv="expires" content="0"/>
+
+        <script type="text/javascript" src="${symbol_pound}{facesContext.externalContext.requestContextPath}/corporativa/recursos/js/zaimella.js"></script>
+        <link rel="shortcut icon" type="image/x-icon" href="${symbol_pound}{facesContext.externalContext.requestContextPath}/resources/img/favicon.png" />
+
+        <link type="text/css" rel="stylesheet" href="${symbol_pound}{facesContext.externalContext.requestContextPath}/javax.faces.resource/texteditor/texteditor.css.xhtml?ln=primefaces" />
+        <link type="text/css" rel="stylesheet" href="${symbol_pound}{facesContext.externalContext.requestContextPath}/corporativa/recursos/css/zaimella.css" />
+
+        <title>${symbol_pound}{moduloControlador.modulo.nombre} V${symbol_pound}{moduloControlador.modulo.version}</title>
+        <script>
+            if (!window.sessionStorage.getItem('tabId')) {
+                alert('Pestaña o ventana abierta indebidamente. Por favor ciérrela');
+                tabId = (new Date()).getTime();
+                window.sessionStorage.setItem('tabId', tabId);
+                console.log("Nueva ventana: " + tabId);
+            }
+            console.log("tabId=" + window.sessionStorage.getItem('tabId'));
+        </script>
+    </h:head>
+
+    <h:body style="${symbol_pound}{moduloControlador.bodyStyle()}">
+
+        <h:form id="frmCheckWindow">
+            <p:remoteCommand name="checkWindow" action="${symbol_pound}{loginControlador.checkWindow()}" />
+        </h:form>
+
+
+                <h:form id="frmIdle">
+                    <p:idleMonitor timeout="${symbol_pound}{moduloControlador.tiempoInactividad*1000}">
+                        <p:ajax event="idle"
+                                listener="${symbol_pound}{applicationControlador.inactividad()}"
+                                />
+                    </p:idleMonitor>                    
+                </h:form>
+
+                <h:form id="frmContent" enctype="multipart/form-data;charset=UTF-8" acceptcharset="UTF-8" >
+                    <ui:include src="/corporativa/templates/templateContent.xhtml" />
+                </h:form>
+
+        <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />
+        <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
+            <img src="${symbol_pound}{facesContext.externalContext.requestContextPath}/corporativa/recursos/img/ajaxloadingbar.gif" />
+        </p:dialog>
+    </h:body>
+</html>

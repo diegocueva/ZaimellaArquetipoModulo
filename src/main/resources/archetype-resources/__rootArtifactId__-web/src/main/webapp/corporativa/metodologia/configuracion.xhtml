@@ -1,0 +1,107 @@
+#set( $symbol_pound = '#' )
+#set( $symbol_dollar = '$' )
+#set( $symbol_escape = '\' )
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:pe="http://primefaces.org/ui/extensions" 
+                template="/corporativa/templates/template.xhtml">
+    <ui:define name="content">
+        <f:metadata>
+            <f:viewAction action="${symbol_pound}{metodologiaControlador.actualizarMetologias()}"/>
+        </f:metadata>
+        <div class="container">
+            <h:outputLabel value="Metodología - Configuración" 
+                           class="pageTitle" />
+
+            <div class="ui-grid-row">
+                <p:fileUpload fileUploadListener="${symbol_pound}{metodologiaControlador.cargaArchivo}" 
+                              update="frmContent:tblMetodologia
+                              frmContent:idMensajes"
+                              mode="advanced"
+                              multiple="false"
+                              allowTypes="/(${symbol_escape}.|${symbol_escape}/)(pdf)${symbol_dollar}/"
+                              label="Seleccionar"
+                              sizeLimit="5000000" 
+                              auto="true"
+                              invalidSizeMessage="Tamaño del archivo inválido (máximo 5mb)"
+                              invalidFileMessage="Tipo de archivo inválido">
+                </p:fileUpload>
+            </div>
+
+            <div class="ui-grid-row">
+                <div  class="ui-g-12 ui-md-12 ui-lg-10">
+                    <p:panelGrid id="tblMetodologia">
+                        <f:facet name="header">
+                            <p:row>
+                                <p:column>Nombre</p:column>
+                                <p:column>Fecha</p:column>
+                                <p:column>Usuario</p:column>
+                                <p:column>Activo</p:column>
+                                <p:column>Opciones</p:column>
+                            </p:row>
+                        </f:facet>
+                        <ui:repeat var="metodologia" value="${symbol_pound}{metodologiaControlador.listaMetodologia}">
+                            <p:row>
+                                <p:column >${symbol_pound}{metodologia.archivo.nombre} </p:column>
+                                <p:column >${symbol_pound}{metodologia.archivo.fecha} </p:column>
+                                <p:column >${symbol_pound}{metodologia.archivo.nombreUsuario} </p:column>
+                                <p:column >
+                                    <p:commandLink rendered="${symbol_pound}{metodologia.estado}" 
+                                                   disabled="true">
+                                        <i class="fa-negro fa fa-check"/>
+                                    </p:commandLink> 
+                                </p:column>
+                                <p:column >        
+                                    <p:commandLink id="btnVerMetodologia" title="Ver" 
+                                                   actionListener="${symbol_pound}{metodologiaControlador.setMetodologia(metodologia)}"
+                                                   update="frmContent:pGrpPdf">
+                                        <i class="fa-negro fa fa-eye"/>
+                                    </p:commandLink>
+
+                                    <p:commandLink id="btnDescargarMetodologia" title="Descargar" ajax="false" immediate="true">
+                                        <p:fileDownload value ="${symbol_pound}{metodologiaControlador.descargarArchivo(metodologia.archivo.id)}" />
+                                        <i class="fa-negro fa fa-download"/>
+                                    </p:commandLink>
+
+                                    <p:commandLink id="btnActivarMetodologia"
+                                                   title="Activar" rendered="${symbol_pound}{!archivo.estado}" 
+                                                   update="frmContent:idMensajes
+                                                   frmContent:tblMetodologia"
+                                                   actionListener="${symbol_pound}{metodologiaControlador.activarMetodologia(metodologia)}">        
+                                        <i class="fa-negro fa fa-check"/>
+                                    </p:commandLink>
+                                    <p:commandLink id="btnEliminarMetodologia" title="Eliminar"
+                                                   update="frmContent:idMensajes
+                                                   frmContent:tblMetodologia"
+                                                   actionListener="${symbol_pound}{metodologiaControlador.eliminarMetodologia(metodologia)}">
+                                        <i class="fa-negro fa fa-trash-o "/>
+                                        <p:confirm header="Confirmation" message="¿Esta seguro que desea eliminar?" icon="ui-icon-alert" />
+                                    </p:commandLink>
+                                    <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                                        <p:commandButton value="Aceptar" type="button"  styleClass="ui-confirmdialog-yes"/>
+                                        <p:commandButton value="Cancelar" type="button"  styleClass="ui-confirmdialog-no"/>
+                                    </p:confirmDialog>
+                                </p:column>
+                            </p:row>
+                        </ui:repeat>
+                    </p:panelGrid>
+                </div>
+            </div>
+            <div class="ui-grid-row">
+                <div  class="ui-g-12 ui-md-12 ui-lg-10">
+                    <h:panelGroup id="pGrpPdf">
+                        <h:panelGroup rendered="${symbol_pound}{metodologiaControlador.metodologia ne null}">
+                            <pe:documentViewer height="500" 
+                                               value="${symbol_pound}{metodologiaControlador.descargarArchivo(metodologiaControlador.metodologia.archivo.id)}"
+                                               download="metodologia.pdf"/>  
+                        </h:panelGroup>
+                    </h:panelGroup>
+                </div>
+
+            </div>
+        </div>      
+    </ui:define>
+</ui:composition>

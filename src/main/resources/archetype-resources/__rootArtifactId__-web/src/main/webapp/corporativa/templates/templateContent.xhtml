@@ -1,0 +1,26 @@
+#set( $symbol_pound = '#' )
+#set( $symbol_dollar = '$' )
+#set( $symbol_escape = '\' )
+<ui:composition 
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui">
+
+    <!-- CONTENIDO A Mensaje de mantenimiento -->
+    <p:panel rendered="${symbol_pound}{moduloAdministradorControlador.mensajeInvasivoMantimientoActivo}">
+        <p:outputPanel style="color: ${symbol_pound}ffffff; width: 10%; background-color: red; display: table-cell; vertical-align: inherit; font-weight: 900; text-align: center; font-size: 20px;">
+            ${symbol_pound}{moduloAdministradorControlador.mensajeMantenimiento}
+        </p:outputPanel>
+    </p:panel>
+    
+    
+    <!-- CONTENIDO B  cuerpo  -->
+    <ui:insert name="content" />
+
+    <!-- CONTENIDO C  versión flotante  -->
+    <p:outputPanel style="font-size: 32px; color:darkorange;position: fixed; bottom: 0; left: 0; margin-left: 50px; margin-bottom: 100px;" 
+                   rendered="${symbol_pound}{!moduloControlador.ambienteProduccion()}">
+        PRUEBAS V${symbol_pound}{moduloControlador.modulo.version}
+    </p:outputPanel>        
+
+</ui:composition>

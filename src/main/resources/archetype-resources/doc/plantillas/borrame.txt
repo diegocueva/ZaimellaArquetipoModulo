@@ -1,0 +1,1 @@
+Archivos HTML a ser usados como plantillas para el envío de correos electrónicos.

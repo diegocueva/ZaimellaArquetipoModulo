@@ -1,0 +1,59 @@
+#set( $symbol_pound = '#' )
+#set( $symbol_dollar = '$' )
+#set( $symbol_escape = '\' )
+<ui:composition 
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:f="http://xmlns.jcp.org/jsf/core"
+    xmlns:h="http://xmlns.jcp.org/jsf/html"
+    xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui">
+
+    <div class="ui-g">
+        <div class="ui-g-12 ui-md-12 ui-g-nopad">
+            <div class="ui-g" style="visibility: visible; overflow: hidden; background-color: ${symbol_pound}0DB14B; vertical-align: middle;padding: 0em 0em; border: 0px; border-bottom-left-radius: 3px; border-bottom-right-radius: 3px; border-top-left-radius: 3px; border-top-right-radius: 3px;" >
+                <div class="ui-g-12 ui-md-6 ui-lg-6 ui-widget">
+                    <a id="mobile-menu-btn" href="${symbol_pound}">
+                        <i class="fa fa-bars icono_barra_superior" ></i>
+                    </a>
+
+                    <h:outputText value="${symbol_pound}{moduloControlador.modulo.nombre} / ${symbol_pound}{moduloControlador.usuario.nombreUsuario}"
+                                  title="Id: ${symbol_pound}{moduloControlador.usuario.nombreUsuario}  Cédula: ${symbol_pound}{moduloControlador.usuario.numeroIdentificacion}"
+                                  style="margin-top:18px; margin-left:5px; font-size: small; color:white;"
+                                  />
+                    <h:outputText value=" *Pruebas*" 
+                                  rendered="${symbol_pound}{!moduloControlador.ambienteProduccion()}"
+                                  style="font-size: x-small;"
+                                  />
+                </div>
+                <div class="ui-g-12 ui-md-6 ui-lg-6 ui-widget">
+
+                    <p:commandLink id="idMenu" rendered="${symbol_pound}{!moduloControlador.menuModulo.elements.isEmpty()}"
+                                   class="icono_barra_superior"
+                                   title="Menú"
+                                   >
+                        <i  class="fa fa-navicon"/>
+                    </p:commandLink>
+                    <p:commandLink id="idMail" 
+                                   action="${symbol_pound}{moduloControlador.irAPantallaBuzon()}"
+                                   class="icono_barra_superior"
+                                   title="Bandeja de entrada">
+                        <i  class="fa fa-envelope"/>
+                    </p:commandLink> 
+                    <p:commandLink id="idHome" 
+                                   actionListener="${symbol_pound}{servicioControlador.paginaInicial()}"
+                                   action="${symbol_pound}{moduloControlador.irAPantallaMain()}"
+                                   class="icono_barra_superior"
+                                   title="Vista principal"
+                                   ajax="false">
+                        <i  class="fa fa-home"/>
+                    </p:commandLink>
+                    <ui:include src="/WEB-INF/templateMenu.xhtml" />
+
+                    <p:contextMenu for="idMenu" event="click" model="${symbol_pound}{moduloControlador.menuModulo}">                     
+                    </p:contextMenu>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</ui:composition>

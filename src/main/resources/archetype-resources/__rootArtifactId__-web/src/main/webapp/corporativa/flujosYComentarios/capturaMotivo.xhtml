@@ -1,0 +1,98 @@
+#set( $symbol_pound = '#' )
+#set( $symbol_dollar = '$' )
+#set( $symbol_escape = '\' )
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <f:view contentType="text/html;charset=UTF-8" encoding="UTF-8" >
+        <h:head>
+            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+            <meta http-equiv="pragma" content="no-cache"/>
+            <meta http-equiv="cache-control" content="no-cache"/>
+            <meta http-equiv="expires" content="0"/>
+            <link type="text/css" rel="stylesheet" href="${symbol_pound}{facesContext.externalContext.requestContextPath}/corporativa/recursos/css/zaimella.css" />
+            <title>${symbol_pound}{capturaMotivoControlador.tituloVentana}</title>
+            <style>
+                .ui-button-text-only .ui-button-text {
+                    padding: 3px !important;
+                    font-size: smaller;
+                }
+                .ui-inputfield {
+                    padding: 0px !important;
+                }
+                .ui-selectonemenu-trigger .ui-icon-triangle-1-s, .ui-selectcheckboxmenu-trigger .ui-icon-triangle-1-s {
+                    margin-top: 0px !important;
+                }
+                .ui-selectcheckboxmenu-multiple .ui-selectcheckboxmenu-trigger .ui-icon {
+                    position: relative;
+                    top: 15%;
+                }
+                .ui-selectonemenu-panel .ui-selectonemenu-list-item, .ui-selectcheckboxmenu-panel .ui-selectcheckboxmenu-list-item {
+                    padding: 1px !important;
+                }
+                .ui-selectcheckboxmenu-panel .ui-selectcheckboxmenu-list-item {
+                    padding: 1px !important;
+                }
+                .ui-selectcheckboxmenu-panel .ui-selectcheckboxmenu-filter-container .ui-icon-search {
+                    width: 20px;
+                }
+                .ui-selectcheckboxmenu-header {
+                    margin-bottom: 0px;
+                    padding: 0px;
+                }
+                .ui-selectcheckboxmenu-panel .ui-selectcheckboxmenu-close .ui-icon-circle-close {
+                    padding-top: 7px;
+                }
+                .ui-selectcheckboxmenu-token {
+                    padding: 0px;
+                    margin: 0px;
+                }
+                .ui-fieldset-legend {
+                    padding: 4px !IMPORTANT;
+                }
+            </style>
+
+        </h:head>
+        <h:body>	
+            <h:form id="frmCapturaMotivo" enctype="multipart/form-data">
+                <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />
+                <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
+                    <img src="${symbol_pound}{facesContext.externalContext.requestContextPath}/corporativa/recursos/img/ajaxloadingbar.gif" />
+                </p:dialog>
+                <p:growl id="idEspera" showDetail="true" sticky="true" />  
+
+                <p:outputPanel id="panelTotal">
+
+                    <p:outputPanel id="panelComentario">
+
+                        <p:inputTextarea id="textAreaMotivo" 
+                                         widgetVar="textAreaMotivo"
+                                         value="${symbol_pound}{capturaMotivoControlador.textoMotivo}" 
+                                         style="margin-bottom:10px; width: 99.5%; padding: 0px !IMPORTANT;"
+                                         rows="5"
+                                         /> 
+                    </p:outputPanel>
+
+                    <p:outputPanel id="panelBotonesComentar" style="text-align: center;">
+
+                        <h:panelGroup id="botonAceptarMotivo" 
+                                      >
+                            <p:commandButton value="ACEPTAR" 
+                                             action="${symbol_pound}{capturaMotivoControlador.aceparMotivo()}"
+                                             update="panelTotal"
+                                             >
+                            </p:commandButton>
+                        </h:panelGroup>
+
+                    </p:outputPanel>                    
+
+                </p:outputPanel>
+
+            </h:form>
+        </h:body>
+    </f:view>
+</html>

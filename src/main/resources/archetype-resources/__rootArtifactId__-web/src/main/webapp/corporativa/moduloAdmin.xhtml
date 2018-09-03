@@ -1,0 +1,279 @@
+#set( $symbol_pound = '#' )
+#set( $symbol_dollar = '$' )
+#set( $symbol_escape = '\' )
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/corporativa/templates/template.xhtml"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+    <ui:define name="content">
+
+        <f:metadata>
+            <f:viewAction action="${symbol_pound}{moduloAdministradorControlador.abrePantalla()}"  />
+        </f:metadata>
+        
+        <p:outputPanel id="panelSesiones" styleClass="ui-g">
+            <div class="ui-g-12 ui-md-12 ui-g-nopad">
+
+                <div class="ui-g">
+                    <div class="ui-g-2 ui-md-3"></div>
+                    <div class="ui-g-8 ui-md-6 ui-panel">
+                        <div class="pageTitle">SESIONES ACTIVAS</div>
+                    </div>
+                    <div class="ui-g-2 ui-md-3"></div>
+                </div>	
+
+                <p:dataTable id="dataTableSesiones"
+                             value="${symbol_pound}{moduloAdministradorControlador.sesionesDeUsuario}"
+                             var="sesion"
+                             reflow="true"
+                             >
+
+                    <p:column headerText="USUARIO" 
+                              sortBy="${symbol_pound}{sesion.usuario.nombreUsuario}">
+                        <h:outputText value="${symbol_pound}{sesion.usuario.nombreUsuario}" title="id=${symbol_pound}{sesion.usuario.nombreUsuario}"/>
+                    </p:column>
+
+                    <p:column headerText="AUTENTICADO" 
+                              sortBy="${symbol_pound}{sesion.fechaAutenticacion}">
+                        <h:outputText value="${symbol_pound}{sesion.fechaAutenticacion}" >
+                            <f:convertDateTime pattern="dd/MM/yyyy HH:mm" />
+                        </h:outputText>
+                    </p:column>
+
+                    <p:column headerText="ACTIVIDAD">
+                        <h:outputText value="${symbol_pound}{sesion.accion}" />                        
+                    </p:column>
+
+                    <p:column headerText="FECHA" 
+                              sortBy="${symbol_pound}{sesion.fechaActividad}">
+                        <h:outputText value="${symbol_pound}{sesion.fechaActividad}" >
+                            <f:convertDateTime pattern="dd/MM/yyyy HH:mm" />
+                        </h:outputText>
+                    </p:column>
+
+                    <p:column width="20">
+                        <p:commandLink  id="idEliminarSesion"
+                                        actionListener="${symbol_pound}{moduloAdministradorControlador.cerrarSesion(sesion)}"
+                                        title="Cerrar Sesion"
+                                        update="frmContent:panelSesiones"
+                                        >
+                            <i class="fa fa-trash-o" style="font-size: medium; color: ${symbol_pound}000001" />
+                            <p:confirm header="CONFIRMACIÓN" 
+                                       message="¿Está seguro que desea sacar este usuario del módulo?"
+                                       icon="fa fa-warning"
+                                       />                        
+                        </p:commandLink>
+                    </p:column>  
+                </p:dataTable>
+                <div class="ui-g">
+                    <div class="ui-g-12 ui-md-12">
+                        <p:commandButton id="btnRefrescaSesiones" 
+                                         value="Refrescar" 
+                                         update="frmContent:panelSesiones"
+                                         actionListener="${symbol_pound}{moduloAdministradorControlador.obtenerSesionesDeUsuario()}"
+                                         />
+                    </div>
+                </div>	
+
+            </div>            
+        </p:outputPanel>
+
+        <br></br>
+        <hr></hr>
+
+        <p:outputPanel id="panelParametros" styleClass="ui-g"> 
+            <div class="ui-g-12 ui-md-12 ui-g-nopad">
+                <div class="ui-g">
+                    <div class="ui-g-2 ui-md-3"></div>
+                    <div class="ui-g-8 ui-md-6 ui-panel">
+                        <div class="pageTitle">PARÁMETROS DEL SISTEMA</div>
+                    </div>
+                    <div class="ui-g-2 ui-md-3"></div>
+                </div>	
+
+                <ui:repeat id="repeatParams"
+                           value="${symbol_pound}{moduloAdministradorControlador.parametros}"
+                           var="parametro">
+
+                    <div class="ui-g">
+                        <div class="ui-g-4 ui-md-4" style="text-align: right;">
+                            <p:outputLabel id="idNameParametro" 
+                                           value="${symbol_pound}{parametro.descripcion}" 
+                                           style="font-weight: bold;" 
+                                           title="${symbol_pound}{parametro.nombre} : ${symbol_pound}{parametro.tipoDato}"
+                                           />
+                        </div>
+                        <div class="ui-g-8 ui-md-8" style="text-align: left;">
+
+                            <p:selectOneMenu id="idValueParametroBoolean"
+                                             value="${symbol_pound}{parametro.valor}"
+                                             style="width: 50px;" 
+                                             rendered="${symbol_pound}{parametro.tipoDato=='BOOLEAN'}"
+                                             >
+                                <f:selectItem itemLabel="SI" itemValue="s" />
+                                <f:selectItem itemLabel="NO" itemValue="n" />
+                            </p:selectOneMenu>
+
+                            <p:inputNumber id="idValueParametroInteger"
+                                           value="${symbol_pound}{parametro.valor}"
+                                           style="width: 50px;" 
+                                           decimalPlaces="0"
+                                           rendered="${symbol_pound}{parametro.tipoDato=='INTEGER'}"
+                                           />
+
+                            <p:inputNumber id="idValueParametroDouble"
+                                           value="${symbol_pound}{parametro.valor}"
+                                           style="width: 50px;" 
+                                           decimalPlaces="2"
+                                           rendered="${symbol_pound}{parametro.tipoDato=='DOUBLE'}"
+                                           />
+
+                            <p:calendar id="idValueParametroDate" 
+                                        value="${symbol_pound}{parametro.valorFecha}" 
+                                        style="width: 50px;" 
+                                        rendered="${symbol_pound}{parametro.tipoDato=='DATE'}"
+                                        />
+
+                            <p:inputText id="idValueParametroString"
+                                         value="${symbol_pound}{parametro.valor}"
+                                         style="width: 200px;" 
+                                         rendered="${symbol_pound}{parametro.tipoDato=='STRING'}"
+                                         />
+
+                        </div>
+                    </div>
+                </ui:repeat>
+
+                <p:outputPanel id="panelBotones" class="panelContainer" style="text-align: center;">
+                    <p:commandButton id="btnGrabarParametros" 
+                                     value="Grabar los parámetros" 
+                                     update="panelParametros" 
+                                     actionListener="${symbol_pound}{moduloAdministradorControlador.grabarParametros()}"
+                                     />
+                    <p:commandButton id="btnRecargarParametros" 
+                                     value="Recargar parámetros" 
+                                     update="panelParametros" 
+                                     actionListener="${symbol_pound}{moduloAdministradorControlador.recargaParametros()}"
+                                     />
+                </p:outputPanel>
+
+
+            </div>
+        </p:outputPanel>
+
+        <br></br>
+        <hr></hr>
+
+
+        <p:outputPanel id="panelMantenimiento" styleClass="ui-g"> 
+            <div class="ui-g-12 ui-md-12 ui-g-nopad">
+                <div class="ui-g">
+                    <div class="ui-g-2 ui-md-3"></div>
+                    <div class="ui-g-8 ui-md-6 ui-panel">
+                        <div class="pageTitle">MANTENIMIENTO DEL SISTEMA</div>
+                    </div>
+                    <div class="ui-g-2 ui-md-3"></div>
+
+                    <div class="ui-g-3 ui-md-3" style="text-align: right;">
+                        <h:outputText value="Pantalla Mantenimiento ACTIVA:"  rendered="${symbol_pound}{moduloAdministradorControlador.pantallaMantenimientoActiva}"/>
+                        <h:outputText value="Pantalla Mantenimiento inactiva:" rendered="${symbol_pound}{!moduloAdministradorControlador.pantallaMantenimientoActiva}"/>                    
+                    </div>
+                    <div class="ui-g-9 ui-md-9" style="text-align: left;">
+                        <p:inputSwitch id="btnPantallaMantenimiento"
+                                       value="${symbol_pound}{moduloAdministradorControlador.pantallaMantenimientoActiva}" 
+                                       style="width: 25px;"
+                                       offLabel=".O." 
+                                       onLabel=".|."
+                                       >
+                            <p:ajax update="panelMantenimiento" />
+                        </p:inputSwitch> 
+                    </div>
+
+                    <div class="ui-g-3 ui-md-3" style="text-align: right;">
+                        <h:outputText value="Mensaje de Mantenimiento ACTIVO:"  rendered="${symbol_pound}{moduloAdministradorControlador.mensajeInvasivoMantimientoActivo}"/>
+                        <h:outputText value="Mensaje de Mantenimiento inactivo:" rendered="${symbol_pound}{!moduloAdministradorControlador.mensajeInvasivoMantimientoActivo}"/>                    
+                    </div>
+                    <div class="ui-g-9 ui-md-9" style="text-align: left;">
+                        <p:inputSwitch id="btnMensajeInvasivo"
+                                       value="${symbol_pound}{moduloAdministradorControlador.mensajeInvasivoMantimientoActivo}" 
+                                       style="width: 25px;"
+                                       offLabel=".O." 
+                                       onLabel=".|."
+                                       >
+                            <p:ajax update="panelMantenimiento" />
+                        </p:inputSwitch> 
+                    </div>
+
+                    <div class="ui-g-3 ui-md-3" style="text-align: right;">
+                        <h:outputText value="Mensaje de Mantenimiento:" />
+                    </div>
+                    <div class="ui-g-9 ui-md-9" style="text-align: left;">
+                        <p:inputTextarea value="${symbol_pound}{moduloAdministradorControlador.mensajeMantenimiento}" 
+                                         cols="50"
+                                         rows="3"
+                                         disabled="${symbol_pound}{moduloAdministradorControlador.mensajeInvasivoMantimientoActivo}"
+                                         />
+                    </div>                    
+
+                </div>	
+
+            </div>
+        </p:outputPanel>
+
+        <br></br>
+        <hr></hr>
+
+        <p:outputPanel id="panelProcesos" styleClass="ui-g"> 
+            <div class="ui-g-12 ui-md-12 ui-g-nopad">
+                <div class="ui-g">
+                    <div class="ui-g-2 ui-md-3"></div>
+                    <div class="ui-g-8 ui-md-6 ui-panel">
+                        <div class="pageTitle">PROCESOS BACKGROUND</div>
+                    </div>
+                    <div class="ui-g-2 ui-md-3"></div>
+
+                    <p:dataTable value="${symbol_pound}{moduloAdministradorControlador.procesos}"
+                                 var="proceso"
+                                 >
+                        <p:column headerText="Nombre">
+                            <p:outputLabel value="${symbol_pound}{moduloAdministradorControlador.nombreProceso(proceso)} (${symbol_pound}{proceso.cronExpression}) ${symbol_pound}{proceso.nextTimeoutString()} "/>
+                        </p:column>
+                        <p:column style="width: 20px;">
+                            <p:commandLink id="btnRecalenzarizar" 
+                                           title="Recalendarizar proceso"
+                                           action="${symbol_pound}{moduloAdministradorControlador.recalendarizaProceso(proceso)}" 
+                                           update="frmContent:idMensajes"
+                                           >
+                                <i class="fa fa-refresh" style="font-size: medium; color: ${symbol_pound}000001" />
+                                <p:confirm header="Confirmación" 
+                                           message="Confirme que desea recalendarizar" 
+                                           icon="ui-icon-alert" />                                
+                            </p:commandLink>
+                        </p:column>                        
+                        <p:column style="width: 20px;">
+                            <p:commandLink id="btnEjecutar" 
+                                           title="Ejecutar proceso"
+                                           action="${symbol_pound}{moduloAdministradorControlador.ejecutaProceso(proceso)}" 
+                                           update="frmContent:idMensajes"
+                                           >
+                                <i class="fa fa-gears" style="font-size: medium; color: ${symbol_pound}000001" />
+                                <p:confirm header="Confirmación" 
+                                           message="Confirme que desea ejecutar este proceso" 
+                                           icon="ui-icon-alert" />                                
+                            </p:commandLink>
+                        </p:column>
+                    </p:dataTable>
+                </div>	
+
+            </div>
+        </p:outputPanel>
+
+        <br></br>
+        <hr></hr>        
+
+    </ui:define>
+</ui:composition>

@@ -1,0 +1,509 @@
+#set( $symbol_pound = '#' )
+#set( $symbol_dollar = '$' )
+#set( $symbol_escape = '\' )
+<ui:composition 
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://xmlns.jcp.org/jsf/html"
+    xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:f="http://xmlns.jcp.org/jsf/core"
+    xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+    <style>
+        .ui-datatable thead th, .ui-datatable tbody tr td{
+            padding-top: 1px !Important;
+            padding-bottom: 1px !Important;
+            padding-left: 2px !IMPORTANT;
+            font-size: 12px !IMPORTANT;
+        }
+        .ui-column-title{
+            font-weight: 900;
+            text-align: center;
+        }            
+        .ui-panelgrid .ui-panelgrid-cell {
+            vertical-align: top;
+        }
+        .ui-accordion .ui-accordion-header{
+            padding: 3px 25px !IMPORTANT;
+            text-align: left;
+        }
+        .textLeft{
+            text-align: left;
+        }
+    </style>
+
+    <p:outputPanel id="panelDisplayQCPError" 
+                   class="panelContainer textLeft"
+                   rendered="${symbol_pound}{!empty displayViewQCPControlador.errorMensaje}"
+                   style="font-size: small"
+                   >
+        <h:outputLabel value="${symbol_pound}{displayViewQCPControlador.errorMensaje}"
+                       style="white-space: pre-wrap;"
+                       />
+    </p:outputPanel>
+
+    <p:outputPanel id="panelDisplayQCP" 
+                   class="panelContainer"
+                   rendered="${symbol_pound}{empty displayViewQCPControlador.errorMensaje}"
+                   >
+
+        <h:outputLabel value="${symbol_pound}{displayViewQCPControlador.qcpSeleccionado.nombre}" 
+                       style="font-weight: 900 !IMPORTANT;"
+                       />
+        <h:outputLabel value="${symbol_pound}{displayViewQCPControlador.qcpSeleccionado.codigoQCP()}"
+                       style="float: left;"
+                       />
+        <h:outputLabel value="V${symbol_pound}{displayViewQCPControlador.qcpSeleccionado.versionView()}"
+                       style="float: right;"
+                       />        
+
+        <p:outputPanel id="panelBasicos" style=" margin-bottom: 10px;">
+            <p:outputPanel class="ui-g" 
+                           style="text-align: left; font-size: 11px;"
+                           >
+                <div class="ui-g-6 ui-md-6 ui-lg-6">
+                    <p:outputLabel value="Área" class="elementTitle" style="padding-top: 0px;"/>
+                </div>
+                <div class="ui-g-6 ui-md-6 ui-lg-6">
+                    <h:outputText value="${symbol_pound}{displayViewQCPControlador.qcpSeleccionado.area}" />
+                </div>                
+                <div class="ui-g-6 ui-md-6 ui-lg-6">
+                    <p:outputLabel value="Tipo" class="elementTitle" style="padding-top: 0px;"/>
+                </div>
+                <div class="ui-g-6 ui-md-6 ui-lg-6">
+                    <h:outputText value="${symbol_pound}{displayViewQCPControlador.qcpSeleccionado.tipo}" />
+                </div>
+
+                <div class="ui-g-6 ui-md-6 ui-lg-6">
+                    <p:outputLabel value="Tiempo" class="elementTitle" style="padding-top: 0px;"/>
+                </div>
+                <div class="ui-g-6 ui-md-6 ui-lg-6">
+                    <h:outputText value="${symbol_pound}{displayViewQCPControlador.qcpSeleccionado.tiempoDisplay()}" />
+                </div>
+            </p:outputPanel>                        
+        </p:outputPanel>
+        <p:outputPanel id="panelOrdenProduccion" 
+                       style=" margin-bottom: 10px; text-align: left;"
+                       rendered="${symbol_pound}{displayViewQCPControlador.mostrarPanelOrdenProduccion()}"
+                       >
+            <p:outputPanel id="panelTituloOrdenProduccion"
+                           class="barraTitleRoja">
+                <p:outputLabel value="Órden de Producción" 
+                               class="elementTitleWhite"
+                               style="display: inline; padding-left: 10px;"/>
+            </p:outputPanel>
+            <p:outputLabel 
+                value="${symbol_pound}{displayViewQCPControlador.evaluacionEnCurso.ordenProduccion.tipoOrden()} ${symbol_pound}{displayViewQCPControlador.evaluacionEnCurso.ordenProduccion.id} ${symbol_pound}{displayViewQCPControlador.evaluacionEnCurso.ordenProduccion.producto}"
+                rendered="${symbol_pound}{displayViewQCPControlador.evaluacionLectura}"
+                />            
+            <p:selectOneMenu   id="onemenuOrdenProd" 
+                               value="${symbol_pound}{displayViewQCPControlador.evaluacionEnCurso.ordenProduccion}" 
+                               style="width: 280px;"
+                               converter="omnifaces.SelectItemsConverter"
+                               rendered="${symbol_pound}{!displayViewQCPControlador.evaluacionLectura}"
+                               >
+                <f:selectItem  itemLabel="Selecccione..." itemValue="${symbol_pound}{null}"/>
+                <f:selectItems value="${symbol_pound}{displayViewQCPControlador.ordenesProduccionSeleccionar}" 
+                               var="orden" 
+                               itemLabel="${symbol_pound}{orden.tipoOrden()} ${symbol_pound}{orden.id} ${symbol_pound}{orden.producto}"
+                               itemValue="${symbol_pound}{orden}" />
+            </p:selectOneMenu>
+        </p:outputPanel>
+
+        <p:outputPanel id="panelLider" 
+                       style=" margin-bottom: 10px; text-align: left;"
+                       rendered="${symbol_pound}{displayViewQCPControlador.tenemosEvaluacionEnCurso()}"
+                       >
+            <p:outputPanel id="panelTituloLider"
+                           class="barraTitleRoja">
+                <p:outputLabel value="Líder" 
+                               class="elementTitleWhite"
+                               style="display: inline; padding-left: 10px;"/>
+            </p:outputPanel>
+            <p:outputLabel 
+                value="${symbol_pound}{displayViewQCPControlador.evaluacionEnCurso.usuarioLider.getApellidosNombres()}"
+                rendered="${symbol_pound}{displayViewQCPControlador.evaluacionLectura}"
+                />
+            <p:selectOneMenu   id="onemenuLider" 
+                               value="${symbol_pound}{displayViewQCPControlador.evaluacionEnCurso.usuarioLider}" 
+                               style="width: 280px;"
+                               converter="omnifaces.SelectItemsConverter"
+                               rendered="${symbol_pound}{!displayViewQCPControlador.evaluacionLectura}"
+                               >
+                <f:selectItem  itemLabel="Selecccione..." itemValue="${symbol_pound}{null}"/>
+                <f:selectItems value="${symbol_pound}{displayViewQCPControlador.lideresSeleccionar}" 
+                               var="lider" 
+                               itemLabel="${symbol_pound}{lider.getApellidosNombres()}"
+                               itemValue="${symbol_pound}{lider}" />
+            </p:selectOneMenu>
+        </p:outputPanel>
+
+        <p:outputPanel id="panelEjecutores" 
+                       style="margin-bottom: 10px; text-align: left;"
+                       rendered="${symbol_pound}{displayViewQCPControlador.tenemosEvaluacionEnCurso()}">
+            <p:outputPanel id="panelTituloEjecutores"
+                           class="barraTitleRoja">
+                <p:outputLabel value="Ejecutores" 
+                               class="elementTitleWhite"
+                               style="display: inline; padding-left: 10px;"/>
+            </p:outputPanel>
+
+            <p:outputPanel id="panelSeleccionaEjecutroes"
+                           rendered="${symbol_pound}{!displayViewQCPControlador.evaluacionLectura}">
+                Lista de ejecutores: 
+                <h:selectOneMenu value="${symbol_pound}{displayViewQCPControlador.ejecutorSeleccionado}" 
+                                 converter="omnifaces.SelectItemsConverter"
+                                 >
+                    <f:selectItem  itemLabel="Seleccione ..." itemValue="${symbol_pound}{null}"/>
+                    <f:selectItems value="${symbol_pound}{displayViewQCPControlador.ejecutoresSeleccionar}" 
+                                   var="ej" 
+                                   itemLabel="${symbol_pound}{ej.getApellidosNombres()}"
+                                   itemValue="${symbol_pound}{ej}" />
+                    <p:ajax  update="panelEjecutores" 
+                             listener="${symbol_pound}{displayViewQCPControlador.onEjecutorSeleccionado()}" />
+                </h:selectOneMenu>
+            </p:outputPanel>                    
+            <p:dataTable id="tablaEjecutores"
+                         value="${symbol_pound}{displayViewQCPControlador.evaluacionEnCurso.ejecutores}"
+                         var="reg"
+                         emptyMessage="No se han seleccionado ejecutores."
+                         rendered="${symbol_pound}{displayViewQCPControlador.tenemosEvaluacionEnCurso()}"
+                         >
+                <p:column headerText="ÁREA" width="200">
+                    <h:outputLabel value="${symbol_pound}{reg.usuario.departamento}" />
+                </p:column>
+                <p:column headerText="NOMBRE">
+                    <h:outputLabel value="${symbol_pound}{reg.usuario.getApellidosNombres()}" />
+                </p:column>
+
+                <p:column width="15" rendered="${symbol_pound}{!displayViewQCPControlador.evaluacionLectura}">
+                    <p:commandLink  id="cmdEliminarCapacitandoUnd"
+                                    title="Eliminar ejecutor"
+                                    actionListener="${symbol_pound}{displayViewQCPControlador.onEliminarEjecutor(reg)}"
+                                    update=":frmContent:panelEjecutores"
+                                    rendered="${symbol_pound}{!displayViewQCPControlador.evaluacionLectura}"
+                                    >
+                        <i class="fa fa-trash-o" style="font-size: medium; color: ${symbol_pound}000001;" />
+                    </p:commandLink>                     
+                </p:column>
+            </p:dataTable>
+        </p:outputPanel>
+
+
+        <p:outputPanel id="panelRelacionados" 
+                       style="margin-bottom: 10px; text-align: left;"
+                       rendered="${symbol_pound}{not empty displayViewQCPControlador.qcpSeleccionado.relacionados and displayViewQCPControlador.evaluacionLectura}"
+                       >
+            <p:outputPanel id="panelTituloRelacionados"
+                           class="barraTitle"
+                           >
+                <p:outputLabel value="QCPs Relacionados" 
+                               class="elementTitleWhite"
+                               style="display: inline; padding-left: 10px;"
+                               />
+            </p:outputPanel>
+            <p:panelGrid >
+                <p:row>
+                    <p:column>
+                        <ul>
+                            <ui:repeat id="repeatRelacionados" 
+                                       value="${symbol_pound}{displayViewQCPControlador.qcpSeleccionado.relacionados}"
+                                       var="relacionado" >
+                                <li>
+                                    <p:commandLink  id="btnIrARelacionado"
+                                                    value="${symbol_pound}{relacionado.qcpRelacionado.nombre}"
+                                                    actionListener="${symbol_pound}{displayViewQCPControlador.mostrarRelacionado(relacionado)}"
+                                                    title="Ir a QCP relacionado ${symbol_pound}{relacionado.qcpRelacionado.id}"
+                                                    oncomplete="abreQCPRelacionado();"
+                                                    >
+                                    </p:commandLink>
+                                </li>
+                            </ui:repeat>
+                        </ul>
+                    </p:column>
+                </p:row>
+            </p:panelGrid> 
+            <script>
+                function abreQCPRelacionado() {
+                    window.open("${symbol_pound}{facesContext.externalContext.requestContextPath}/corporativa/externalQCP/externalDisplayQCP.xhtml", "_qcpRelacionado", "toolbar=no,scrollbars=yes,resizable=yes,top=0,left=300,width=1000,height=650");
+                }
+            </script>            
+        </p:outputPanel>        
+
+        <p:outputPanel id="panelImplementos" style=" margin-bottom: 10px;">
+            <p:outputPanel id="panelTituloImplementos"
+                           rendered="${symbol_pound}{displayViewQCPControlador.mostrarImplementos()}"
+                           class="barraTitle"
+                           >
+                <p:outputLabel value="Implementos de Seguridad" 
+                               class="elementTitleWhite"
+                               style="display: inline; padding-left: 10px;"
+                               />
+            </p:outputPanel>
+
+            <p:outputPanel class="ui-g" 
+                           style="text-align: left; font-size: 11px;"
+                           rendered="${symbol_pound}{displayViewQCPControlador.mostrarImplementos()}"
+                           >
+                <c:forEach items="${symbol_pound}{displayViewQCPControlador.qcpSeleccionado.implementos}" var="imp">
+                    <div class="ui-g-6 ui-md-4 ui-lg-3">
+                        <i class="fa fa-circle" style="font-size: small !IMPORTANT; padding: 5px;"/>
+                        <h:outputText value="${symbol_pound}{imp.nombre}" title="${symbol_pound}{imp.idImplemento}" />
+                    </div>
+                </c:forEach>
+            </p:outputPanel>
+            <p:outputLabel value="N/A" 
+                           rendered="${symbol_pound}{displayViewQCPControlador.mostrarImplementos() and empty displayViewQCPControlador.qcpSeleccionado.implementos}"
+                           />
+        </p:outputPanel>
+
+
+        <p:outputPanel id="panelHerramientas" style=" margin-bottom: 10px;">
+            <p:outputPanel id="panelTituloHerramientas"
+                           rendered="${symbol_pound}{displayViewQCPControlador.mostrarHerramientas()}"
+                           class="barraTitle"
+                           >
+                <p:outputLabel value="Herramientas" 
+                               class="elementTitleWhite"
+                               style="display: inline; padding-left: 10px;"
+                               />
+            </p:outputPanel>
+            <p:outputPanel class="ui-g" 
+                           style="text-align: left; font-size: 11px;"
+                           rendered="${symbol_pound}{displayViewQCPControlador.mostrarHerramientas()}"
+                           >
+                <c:forEach items="${symbol_pound}{displayViewQCPControlador.qcpSeleccionado.herramientas}" var="herr">
+                    <div class="ui-g-6 ui-md-4 ui-lg-3">
+                        <i class="fa fa-circle" style="font-size: small !IMPORTANT; padding: 5px;" />
+                        <h:outputText value="${symbol_pound}{herr.nombre}" title="${symbol_pound}{herr.idHerramienta}" />                                   
+                    </div>
+                </c:forEach>                    
+            </p:outputPanel>
+            <p:outputLabel value="N/A" 
+                           rendered="${symbol_pound}{displayViewQCPControlador.mostrarHerramientas() and empty displayViewQCPControlador.qcpSeleccionado.herramientas}"
+                           />            
+        </p:outputPanel>
+
+        <p:remoteCommand name="refreshPanelQuienes" update="panelQuienes" />
+        <p:outputPanel id="panelQuienes" style=" margin-bottom: 10px;">
+            <p:outputPanel id="panelTituloQuienes"
+                           class="barraTitle"
+                           >
+                <p:outputLabel value="¿Quién?" 
+                               class="elementTitleWhite"
+                               style="display: inline; padding-left: 10px;"
+                               />
+            </p:outputPanel>
+
+            <ui:repeat id="repeatQuienes"
+                       value="${symbol_pound}{displayViewQCPControlador.qcpSeleccionado.quienes}"
+                       var="quien"
+                       >
+
+                <p:outputPanel class="barraTitleCeleste"
+                               style="margin-top: 10px;"
+                               >
+                    <p:outputLabel value="${symbol_pound}{quien.nombre}"
+                                   style="display: inline; padding-left: 10px;"
+                                   />     
+                </p:outputPanel>
+
+                <div id="divRepeatQuienes" class="ui-datatable ui-widget">
+                    <div class="ui-datatable-tablewrapper">
+                        <table role="grid">
+                            <thead>
+                                <tr role="row">
+                                    <th class="ui-state-default textLeft" role="columnheader" scope="col" style="width: 15%;"><span class="ui-column-title">¿Qué?</span></th>
+                                    <th class="ui-state-default textLeft" role="columnheader" scope="col"                    ><span class="ui-column-title">¿Cómo?</span></th>
+                                    <ui:fragment rendered="${symbol_pound}{displayViewQCPControlador.tenemosEvaluacionEnCurso()}">
+                                        <th class="ui-state-default textLeft" role="columnheader" scope="col" style="width: 20px;"><span class="ui-column-title" title="NO CUMPLE">N/C</span></th>
+                                        <th class="ui-state-default textLeft" role="columnheader" scope="col" style="width: 20px;"><span class="ui-column-title" title="NO APLICA">N/A</span></th>
+                                        <th class="ui-state-default textLeft" role="columnheader" scope="col" style="width: 20px;"><span class="ui-column-title" title="Observaciones"><i class="fa fa-comment" /></span></th>
+                                    </ui:fragment>                                    
+                                    <th class="ui-state-default textLeft" role="columnheader" scope="col" style="width: 15%;"><span class="ui-column-title">¿Cuándo?</span></th>
+                                    <th class="ui-state-default textLeft" role="columnheader" scope="col"                    ><span class="ui-column-title">¿Por qué?</span></th>
+                                </tr>                        
+                            </thead>
+                            <tbody class="ui-datatable-data ui-widget-content">
+
+                                <ui:repeat id="repeatComos"
+                                           value="${symbol_pound}{quien.listaComos}"
+                                           var="como"
+                                           varStatus="st"
+                                           >
+
+                                    <tr class="ui-widget-content ui-datatable-even" role="row">
+                                        <ui:fragment rendered="${symbol_pound}{como.numeral == 1}">
+                                            <td role="gridcell" class="textLeft"
+                                                style=" white-space: pre-line;"
+                                                rowspan="${symbol_pound}{como.que.comos.size()}"
+                                                >
+                                                <h:outputText value="${symbol_pound}{como.que.numeral}.- " title="${symbol_pound}{como.que.id}" style="font-weight: 900;"/>
+                                                <h:outputText value="${symbol_pound}{como.que.que}" /> 
+                                            </td>                                
+                                        </ui:fragment>
+
+
+                                        <td role="gridcell" class="textLeft" style=" white-space: pre-line;">
+                                            <h:outputText value="${symbol_pound}{como.que.numeral}.${symbol_pound}{como.numeral}.- " title="id=${symbol_pound}{como.id} ord=${symbol_pound}{como.orden}" style="font-weight: 900;"/>
+                                            <h:outputText value="${symbol_pound}{como.descripcion}" />
+                                            <p:commandLink id="btnGaleriaImagenes" 
+                                                           title="Mostrar imágenes"
+                                                           actionListener="${symbol_pound}{displayViewQCPControlador.abreGaleria(como)}"
+                                                           rendered="${symbol_pound}{como.tieneImagenes()}"
+                                                           >
+                                                <i class="fa fa-photo" style="font-size: larger; color: ${symbol_pound}000001;" />
+                                            </p:commandLink>
+                                        </td>
+
+                                        <ui:fragment rendered="${symbol_pound}{displayViewQCPControlador.tenemosEvaluacionEnCurso()}">
+                                            <td role="gridcell" class="textLeft">
+                                                <p:commandLink id="btnNoCumple" 
+                                                               title="NO CUMPLE"
+                                                               actionListener="${symbol_pound}{displayViewQCPControlador.onClickNoCumple(como)}" 
+                                                               update="frmContent:panelQuienes"
+                                                               disabled="${symbol_pound}{displayViewQCPControlador.evaluacionLectura}"
+                                                               >
+                                                    <i class="fa ${symbol_pound}{como.iconoNoCumple()}" style="font-size: medium; color: ${symbol_pound}000001;" />
+                                                    <p:ajax event="dialogReturn" oncomplete="refreshPanelQuienes();" /> 
+                                                </p:commandLink>
+                                            </td>
+                                            <td role="gridcell" class="textLeft">
+                                                <p:commandLink id="btnNoAplica" 
+                                                               title="NO APLICA"
+                                                               actionListener="${symbol_pound}{displayViewQCPControlador.onClickNoAplica(como)}" 
+                                                               update="frmContent:panelQuienes"
+                                                               disabled="${symbol_pound}{displayViewQCPControlador.evaluacionLectura}"
+                                                               >
+                                                    <i class="fa ${symbol_pound}{como.iconoNoAplica()}" style="font-size: medium; color: ${symbol_pound}000001;" />
+                                                    <p:ajax event="dialogReturn" oncomplete="refreshPanelQuienes();" /> 
+                                                </p:commandLink>
+                                            </td>
+                                            <td role="gridcell" class="textLeft">
+                                                <p:commandLink id="btnObservaciones" 
+                                                               title="OBSERVACIONES"
+                                                               actionListener="${symbol_pound}{displayViewQCPControlador.onClickObservaciones(como)}" 
+                                                               update="frmContent:panelQuienes"
+                                                               >
+                                                    <i class="fa ${symbol_pound}{como.iconoComentarios()}" style="font-size: medium; color: ${symbol_pound}000001;" />
+                                                    <p:ajax event="dialogReturn" oncomplete="refreshPanelQuienes();" /> 
+                                                </p:commandLink>
+                                            </td>                                            
+                                        </ui:fragment>
+
+                                        <ui:fragment rendered="${symbol_pound}{como.numeral == 1}">
+                                            <td role="gridcell" class="textLeft"
+                                                style=" white-space: pre-line;"
+                                                rowspan="${symbol_pound}{como.que.comos.size()}">
+                                                <h:outputText value="${symbol_pound}{como.que.cuando}" />
+                                            </td>
+                                        </ui:fragment>                            
+                                        <td role="gridcell" class="textLeft"
+                                            style="white-space: pre-line;">
+                                            <h:outputText value="${symbol_pound}{como.porQue}" />
+                                        </td>
+                                    </tr>
+
+                                </ui:repeat>
+
+                            </tbody>
+                        </table>                    
+                    </div>                    
+                </div>
+
+            </ui:repeat>
+        </p:outputPanel>
+
+        <p:outputPanel id="panelAnexos" style=" margin-bottom: 10px;">
+            <p:outputPanel id="panelTituloAnexos"
+                           class="barraTitle"
+                           >
+                <p:outputLabel value="Anexos" 
+                               class="elementTitleWhite"
+                               style="display: inline; padding-left: 10px;"
+                               />     
+            </p:outputPanel>
+
+            <p:dataTable id="tablaAnexos"
+                         value="${symbol_pound}{displayViewQCPControlador.qcpSeleccionado.anexos}"
+                         var="anexo"
+                         >
+                <p:column headerText="Archivo">
+                    <p:outputPanel style="text-align: left;">
+                        <p:commandLink  id="cmdDescargaAnexo"
+                                        ajax="false"
+                                        immediate="true"
+                                        title="Descarga Anexo"
+                                        actionListener="${symbol_pound}{displayViewQCPControlador.descargaAnexo(anexo)}"
+                                        >
+                            <h:outputText value="${symbol_pound}{anexo.nombre}" title="id=${symbol_pound}{anexo.id}  idArchivo=${symbol_pound}{anexo.idContenido}"/>
+                            <p:fileDownload value ="${symbol_pound}{displayViewQCPControlador.streamedContent}" />
+                        </p:commandLink>                            
+                    </p:outputPanel>
+                </p:column>
+                <p:column headerText="Fecha" width="120">
+                    <h:outputText value="${symbol_pound}{anexo.fecha}" >
+                        <f:convertDateTime pattern="dd/MM/yyyy HH:mm" />
+                    </h:outputText>
+                </p:column>
+            </p:dataTable>
+
+        </p:outputPanel>
+
+        <p:outputPanel id="panelNotas" 
+                       style=" margin-bottom: 10px;">
+            <p:outputPanel id="panelTituloNotas"
+                           class="barraTitle"
+                           >
+                <p:outputLabel value="Notas" 
+                               class="elementTitleWhite"
+                               style="display: inline; padding-left: 10px;"
+                               />
+            </p:outputPanel>
+
+            <p:outputPanel id="panelNotasContenido"
+                           style="text-align: left !IMPORTANT;"
+                           >
+                <h:outputLabel value="${symbol_pound}{displayViewQCPControlador.qcpSeleccionado.notas}" 
+                               style="white-space: pre-wrap; font-size: small; text-align: left !IMPORTANT;"
+                               />                            
+            </p:outputPanel>
+        </p:outputPanel>
+
+
+        <p:outputPanel id="panelNotasEvaluacion" 
+                       style=" margin-bottom: 10px;"
+                       rendered="${symbol_pound}{displayViewQCPControlador.tenemosEvaluacionEnCurso()}"
+                       >
+            <p:outputPanel id="panelTituloNotasEvaluacion"
+                           class="barraTitleRoja"
+                           >
+                <p:outputLabel value="Notas de Auditoría" 
+                               class="elementTitleWhite"
+                               style="display: inline; padding-left: 10px;"
+                               />
+            </p:outputPanel>
+
+            <p:outputPanel id="panelNotasEvaluacionContenido"
+                           style="text-align: left !IMPORTANT;"
+                           rendered="${symbol_pound}{displayViewQCPControlador.evaluacionLectura}"
+                           >
+                <h:outputLabel value="${symbol_pound}{displayViewQCPControlador.evaluacionEnCurso.notas}" 
+                               style="white-space: pre-wrap; font-size: small; text-align: left !IMPORTANT;"
+                               />                            
+            </p:outputPanel>
+
+            <p:outputPanel id="panelNotasEvaluacionEditar"
+                           style="text-align: left !IMPORTANT;"
+                           rendered="${symbol_pound}{!displayViewQCPControlador.evaluacionLectura}"
+                           >
+                <p:inputTextarea id="textAreaNotasEvaluacion" 
+                                 value="${symbol_pound}{displayViewQCPControlador.evaluacionEnCurso.notas}"
+                                 style="margin-bottom:10px; width: 99.5%; padding: 0px !IMPORTANT;"
+                                 cols="5"
+                                 />      
+            </p:outputPanel>
+        </p:outputPanel>
+
+    </p:outputPanel>
+</ui:composition>
