@@ -4,7 +4,6 @@
 package ${package}.enumeration;
 
 import com.zaimella.commons.abstracto.CodigoPaginaBase;
-import com.zaimella.commons.enumeration.ModuloCorporativo;
 
 /**
  *
@@ -13,19 +12,17 @@ import com.zaimella.commons.enumeration.ModuloCorporativo;
 public enum CodigoPagina implements CodigoPaginaBase{
 
     // MESA DE TRABAJO
-    XXXXMAIN0(ModuloCorporativo.QCPS, "Mesa de trabajo", null, "/", "main"),
+    ${CODIGO_MODULO}MAIN0("Mesa de trabajo", null, "/", "main"),
     // ADMINISTRACIÓN
-    XXXXADMIN(ModuloCorporativo.QCPS, "Administración del módulo", "Administración", "/corporativa",  "/moduloAdmin"),
+    ${CODIGO_MODULO}ADMIN("Administración del módulo", "Administración", "/corporativa",  "/moduloAdmin"),
     ;
     
-    private final ModuloCorporativo modulo;
     private final String            nombre;
     private final String            opcionMenu;
     private final String            path;
     private final String            pageName;
 
-    private CodigoPagina(ModuloCorporativo modulo, String nombre, String opcionMenu, String path, String pageName) {
-        this.modulo     = modulo;
+    private CodigoPagina(String nombre, String opcionMenu, String path, String pageName) {
         this.nombre     = nombre;
         this.opcionMenu = opcionMenu;
         this.path       = path;
@@ -59,8 +56,9 @@ public enum CodigoPagina implements CodigoPaginaBase{
         return this.name();
     }
 
-    public ModuloCorporativo getModulo() {
-        return modulo;
+    @Override
+    public String getCodModulo() {
+        return Codigo.${CODIGO_MODULO}.name();
     }
 
     public String getNombre() {

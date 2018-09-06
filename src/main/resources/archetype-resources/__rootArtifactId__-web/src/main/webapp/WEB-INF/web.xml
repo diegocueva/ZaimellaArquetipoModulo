@@ -25,11 +25,11 @@
     </context-param>
     <context-param>
         <param-name>app.zaimella.name</param-name>
-        <param-value>XXXXNombreModulo</param-value>
+        <param-value>${rootArtifactId}</param-value>
     </context-param>
     <context-param>
         <param-name>app.zaimella.code</param-name>
-        <param-value>XXXX</param-value>
+        <param-value>${CODIGO_MODULO}</param-value>
     </context-param>
     <context-param>
         <param-name>app.zaimella.version</param-name>

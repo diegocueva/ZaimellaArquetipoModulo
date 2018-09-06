@@ -5,11 +5,12 @@
 package ${package}.enumeration;
 
 /**
- *
+ * Roles configurados para el módulo
+ * 
  * @author dcueva
  */
 public enum Rol {
-    XXXX_ADMIN("ADMINISTRADOR"),
+    ${CODIGO_MODULO}_ADMIN("ADMINISTRADOR"),
 ;
     
     private final String descripcion;
