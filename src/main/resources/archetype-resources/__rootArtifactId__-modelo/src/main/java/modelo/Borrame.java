@@ -21,10 +21,10 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinColumns;
 import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
-import org.hibernate.envers.Audited;
 
 /**
  * Ejemplo de codificación de una entidad
@@ -36,23 +36,24 @@ import org.hibernate.envers.Audited;
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Tabla(comentario = "Ejemplo de entidad de base de datos")
 @NamedQueries({
-    
+    @NamedQuery(name = "Borrame.todosLosBorrames",  query = "FROM Borrame borrame where borrame.estado=com.zaimella.commons.enumeration.Estado.ACTIVO and borrame.codEmpresa=:codEmpresa"),
 })
 public class Borrame implements Serializable{
 
     private static final long serialVersionUID = 1L;
     @Id
     @Column(nullable = false)
-    @Audited
     private Integer id;
     
+    @Column(nullable = false, length = 10)
+    @Columna(comentario = "Código de la empresa")
+    private String codEmpresa;
+    
     @Column(nullable = false, length = 40)
-    @Audited
     @Columna(comentario = "Nombre para identificar")
     private String nombre;
     
     @Column(nullable = false)
-    @Audited
     @Columna(comentario = "Cantidad entera")
     private Integer cantidad;
     
@@ -66,7 +67,6 @@ public class Borrame implements Serializable{
     private EntidadTablaGeneral instrumentoMedicion;
     
     @OneToOne()
-    @Audited
     @JoinColumn(nullable = true, name = "usuario")
     @Columna(comentario = "Usuario")
     private UsuarioCorporativo usuario;
@@ -80,7 +80,11 @@ public class Borrame implements Serializable{
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     @Columna(comentario = "Fecha del registro")
     private Date fecha;
-            
+
+    public Borrame() {
+        this.estado = Estado.ACTIVO;
+    }
+    
     public Integer getId() {
         return id;
     }
@@ -121,12 +125,28 @@ public class Borrame implements Serializable{
         this.instrumentoMedicion = instrumentoMedicion;
     }
 
+    public String getCodEmpresa() {
+        return codEmpresa;
+    }
+
+    public void setCodEmpresa(String codEmpresa) {
+        this.codEmpresa = codEmpresa;
+    }
+
     public Date getFecha() {
         return fecha;
     }
 
     public void setFecha(Date fecha) {
         this.fecha = fecha;
+    }
+
+    public Estado getEstado() {
+        return estado;
+    }
+
+    public void setEstado(Estado estado) {
+        this.estado = estado;
     }
 
     /**
